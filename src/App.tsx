@@ -1,23 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import CardCharacter from "./components/CardCharacter";
+
+// TIPAGEM OBRIGATÓRIA
+//    PROPS
+//    STATES
+//    PARÂMETROS DE FUNÇÕES
+
+interface Character {
+  id: number;
+  name: string;
+  status: "Alive" | "Dead" | "unknown";
+  species: string;
+  image: string;
+}
 
 function App() {
+  //   const [characters, setCharacters] = useState<Array<Character>>([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
+
+  useEffect(() => {
+    fetch("https://rickandmortyapi.com/api/character")
+      .then((res) => res.json())
+      .then((res) => setCharacters(res.results));
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {characters.map((character) => (
+          <CardCharacter key={character.id} character={character} />
+        ))}
       </header>
     </div>
   );
