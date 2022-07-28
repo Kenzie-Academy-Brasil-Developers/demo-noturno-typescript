@@ -6,7 +6,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   toDelete?: boolean;
 }
 
-const Button = ({ children, toDelete = true, ...rest }: ButtonProps) => {
+const Button = ({ children, toDelete = false, ...rest }: ButtonProps) => {
   return (
     <ButtonStyled toDelete={toDelete} {...rest}>
       {children}

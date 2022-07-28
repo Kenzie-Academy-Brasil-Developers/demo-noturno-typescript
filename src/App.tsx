@@ -1,36 +1,29 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import CardCharacter from "./components/CardCharacter";
-
-// TIPAGEM OBRIGATÓRIA
-//    PROPS
-//    STATES
-//    PARÂMETROS DE FUNÇÕES
-
-interface Character {
-  id: number;
-  name: string;
-  status: "Alive" | "Dead" | "unknown";
-  species: string;
-  image: string;
-}
+import { useCharacters } from "./providers/CharactersProvider";
 
 function App() {
-  //   const [characters, setCharacters] = useState<Array<Character>>([]);
-  const [characters, setCharacters] = useState<Character[]>([]);
 
-  useEffect(() => {
-    fetch("https://rickandmortyapi.com/api/character")
-      .then((res) => res.json())
-      .then((res) => setCharacters(res.results));
-  }, []);
+  const {characters, favorites} = useCharacters()
 
   return (
     <div className="App">
       <header className="App-header">
-        {characters.map((character) => (
-          <CardCharacter key={character.id} character={character} />
-        ))}
+
+        <div>
+          {characters.map((character) => {
+            return favorites.includes(character) || <CardCharacter key={character.id} character={character} />
+          }
+          )}
+        </div>
+
+        <div>
+          {favorites.map((character) => {
+            return <CardCharacter key={character.id} character={character} toDelete/>
+          })}
+        </div>
+        
       </header>
     </div>
   );
